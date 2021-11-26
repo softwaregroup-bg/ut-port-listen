@@ -23,10 +23,6 @@ module.exports = function listen() {
 
             Object.entries(this.socketServers).forEach(([name, wss]) => {
                 wss.on('connection', ws => {
-                    ws.isAlive = true;
-                    ws.on('pong', () => {
-                        ws.isAlive = true;
-                    });
                     let callId,
                         sampleRate,
                         context;
