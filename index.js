@@ -14,6 +14,18 @@ module.exports = function listen() {
             };
         }
 
+        get schema() {
+            return {
+                type: 'object',
+                properties: {
+                    projectId: {
+                        type: 'string'
+                    }
+                },
+                required: ['projectId']
+            };
+        }
+
         async init() {
             this.connections = new Map();
             this.speechClient = new TextToSpeechClient();
