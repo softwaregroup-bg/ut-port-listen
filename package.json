@@ -1,6 +1,6 @@
 {
     "name": "ut-port-listen",
-    "version": "7.2.1",
+    "version": "7.3.0",
     "main": "index.js",
     "dependencies": {
         "@google-cloud/dialogflow": "^4.5.0",
