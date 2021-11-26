@@ -3,8 +3,8 @@
     "version": "7.1.0",
     "main": "index.js",
     "dependencies": {
-        "@google-cloud/dialogflow": "4.5.0",
-        "@google-cloud/text-to-speech": "3.3.1",
+        "@google-cloud/dialogflow": "^4.5.0",
+        "@google-cloud/text-to-speech": "^3.3.1",
         "pb-util": "^1.0.2",
         "uuid": "3.3.2"
     },
