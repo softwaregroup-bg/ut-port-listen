@@ -7,6 +7,11 @@ module.exports = function listen() {
         get defaults() {
             return {
                 namespace: ['listen'],
+                log: {
+                    transform: {
+                        privateKey: 'mask'
+                    }
+                },
                 server: {
                     port: 8087
                 },
