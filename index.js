@@ -35,26 +35,26 @@ module.exports = function listen() {
 
             Object.entries(this.socketServers).forEach(([name, wss]) => {
                 wss.on('connection', ws => {
-                    let callId,
-                        sampleRate,
-                        context;
                     let initial = true;
+                    let cId;
 
                     ws.on('message', data => {
                         if (initial) {
                             initial = false;
-                            ({callId, sampleRate, context} = JSON.parse(data));
+                            const {callId, sampleRate, fulfilParams, context, contextParams} = JSON.parse(data);
+                            cId = callId;
                             const session = this.sessionsClient.projectAgentSessionPath(this.config.projectId, callId);
-                            this.playWelcome({socket: ws, session, sampleRate});
                             return this.createDetectStream(callId, {
                                 socket: ws,
                                 sampleRate,
                                 session,
-                                context: struct.encode(context)
+                                fulfilParams: struct.encode(fulfilParams),
+                                context,
+                                contextParams: struct.encode(contextParams)
                             });
                         }
                         if (Buffer.isBuffer(data)) {
-                            const connection = this.connections.get(callId);
+                            const connection = this.connections.get(cId);
                             return connection?.dialogflow?.write({
                                 session: connection?.session,
                                 inputAudio: data
@@ -64,19 +64,13 @@ module.exports = function listen() {
                     });
                     ws.on('close', () => {
                         ws.closed = true;
-                        const connection = this.connections.get(callId);
+                        const connection = this.connections.get(cId);
                         connection?.dialogflow?.end();
                         connection?.dialogflow?.destroy();
-                        this.connections.delete(callId);
+                        this.connections.delete(cId);
                     });
                 });
             });
-        }
-
-        async playWelcome({socket, session, sampleRate}) {
-            const [{queryResult: {fulfillmentText: text}}] = await this.sessionsClient
-                .detectIntent({session, queryInput: {event: { name: 'Welcome', parameters: {}, languageCode: 'bg-bg'}}});
-            return this.synthesizeAndPlay({socket, text, sampleRate});
         }
 
         async synthesizeAndPlay({socket, text, sampleRate}) {
@@ -95,7 +89,7 @@ module.exports = function listen() {
             }));
         }
 
-        async createDetectStream(callId, {socket, sampleRate, session, context}) {
+        async createDetectStream(callId, {socket, sampleRate, session, fulfilParams, context, contextParams}) {
             const dialogflow = this.sessionsClient.streamingDetectIntent();
             dialogflow
                 .on('error', this.log.error)
@@ -110,7 +104,7 @@ module.exports = function listen() {
                         dialogflow.destroy();
                         const {fulfillmentText: text} = queryResult;
                         this.logInfo({Fulfillment: text});
-                        !socket.closed && this.createDetectStream(callId, {socket, sampleRate, session, context});
+                        !socket.closed && this.createDetectStream(callId, {socket, sampleRate, session, fulfilParams});
                         return this.synthesizeAndPlay({socket, text, sampleRate});
                     }
                 })
@@ -120,12 +114,19 @@ module.exports = function listen() {
                         audioConfig: {
                             audioEncoding: 'AUDIO_ENCODING_LINEAR_16',
                             sampleRateHertz: sampleRate,
-                            languageCode: 'bg-bg'
+                            languageCode: 'bg-bg',
+                            singleUtterance: true
                         },
-                        singleUtterance: true
+                        ...context && {
+                            event: {
+                                name: context,
+                                parameters: contextParams,
+                                languageCode: 'bg-bg'
+                            }
+                        }
                     },
                     queryParams: {
-                        payload: context
+                        payload: fulfilParams
                     }
                 });
             this.connections.set(callId, {socket, dialogflow, session, sampleRate});
