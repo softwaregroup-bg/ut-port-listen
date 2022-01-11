@@ -1,3 +1,4 @@
+const WebSocket = require('ws');
 const {struct} = require('pb-util');
 const {SessionsClient} = require('@google-cloud/dialogflow');
 const {TextToSpeechClient} = require('@google-cloud/text-to-speech');
@@ -78,6 +79,7 @@ module.exports = function listen() {
                         }
                         if (Buffer.isBuffer(data)) {
                             const connection = this.connections.get(cId);
+                            if (connection?.dialogflow?.destroyed) return;
                             return connection?.dialogflow?.write({
                                 session: connection?.session,
                                 inputAudio: data
@@ -86,7 +88,6 @@ module.exports = function listen() {
                         this.logInfo(data);
                     });
                     ws.on('close', () => {
-                        ws.closed = true;
                         const connection = this.connections.get(cId);
                         connection?.dialogflow?.end();
                         connection?.dialogflow?.destroy();
@@ -115,7 +116,13 @@ module.exports = function listen() {
         async createDetectStream(callId, {socket, sampleRate, session, fulfilParams, context, contextParams}) {
             const dialogflow = this.sessionsClient.streamingDetectIntent();
             dialogflow
-                .on('error', this.log.error)
+                .on('error', error => {
+                    this.log.error(error);
+                    if (socket.readyState === WebSocket.OPEN) {
+                        socket.send(JSON.stringify({type: 'disconnect'}));
+                        return socket.close();
+                    }
+                })
                 .on('data', ({recognitionResult, queryResult}) => {
                     if (recognitionResult) {
                         this.logInfo({Transcript: recognitionResult.transcript});
@@ -127,8 +134,10 @@ module.exports = function listen() {
                         dialogflow.destroy();
                         const {fulfillmentText: text} = queryResult;
                         this.logInfo({Fulfillment: text});
-                        !socket.closed && this.createDetectStream(callId, {socket, sampleRate, session, fulfilParams});
-                        return this.synthesizeAndPlay({socket, text, sampleRate});
+                        if (socket.readyState === WebSocket.OPEN) {
+                            this.createDetectStream(callId, {socket, sampleRate, session, fulfilParams});
+                            return this.synthesizeAndPlay({socket, text, sampleRate});
+                        }
                     }
                 })
                 .write({
