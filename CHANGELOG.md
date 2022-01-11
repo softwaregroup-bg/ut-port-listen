@@ -1,3 +1,12 @@
+## [7.4.1](https://github.com/softwaregroup-bg/ut-port-listen/compare/v7.4.0...v7.4.1) (2022-01-11)
+
+
+### Bug Fixes
+
+* mask private key ([e3a9201](https://github.com/softwaregroup-bg/ut-port-listen/commit/e3a92018470a715172df87a6951849b4e8b77274))
+
+
+
 # [7.4.0](https://github.com/softwaregroup-bg/ut-port-listen/compare/v7.3.2...v7.4.0) (2022-01-11)
 
 
