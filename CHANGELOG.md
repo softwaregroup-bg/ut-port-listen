@@ -1,3 +1,12 @@
+## [7.4.2](https://github.com/softwaregroup-bg/ut-port-listen/compare/v7.4.1...v7.4.2) (2022-01-11)
+
+
+### Bug Fixes
+
+* handle dialogflow errors ([f8a9b88](https://github.com/softwaregroup-bg/ut-port-listen/commit/f8a9b8865f30e8f0a4264972773a8312b7e6e9e9))
+
+
+
 ## [7.4.1](https://github.com/softwaregroup-bg/ut-port-listen/compare/v7.4.0...v7.4.1) (2022-01-11)
 
 
