@@ -1,3 +1,12 @@
+# [7.4.0](https://github.com/softwaregroup-bg/ut-port-listen/compare/v7.3.2...v7.4.0) (2022-01-11)
+
+
+### Features
+
+* get credentials from config ([cba9d27](https://github.com/softwaregroup-bg/ut-port-listen/commit/cba9d27335d261c244078dd26eb38d5a7579d2d4))
+
+
+
 ## [7.3.2](https://github.com/softwaregroup-bg/ut-port-listen/compare/v7.3.1...v7.3.2) (2022-01-11)
 
 
