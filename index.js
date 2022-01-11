@@ -18,6 +18,12 @@ module.exports = function listen() {
             return {
                 type: 'object',
                 properties: {
+                    email: {
+                        type: 'string'
+                    },
+                    privateKey: {
+                        type: 'string'
+                    },
                     projectId: {
                         type: 'string'
                     }
@@ -28,8 +34,20 @@ module.exports = function listen() {
 
         async init() {
             this.connections = new Map();
-            this.speechClient = new TextToSpeechClient();
-            this.sessionsClient = new SessionsClient();
+            const credentials = (
+                this.config.email && this.config.privateKey && {
+                    client_email: this.config.email,
+                    private_key: this.config.privateKey
+                }
+            ) || undefined;
+            this.speechClient = new TextToSpeechClient({
+                credentials,
+                projectId: this.config.projectId
+            });
+            this.sessionsClient = new SessionsClient({
+                credentials,
+                projectId: this.config.projectId
+            });
 
             await super.init(...arguments);
 
