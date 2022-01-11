@@ -1,3 +1,12 @@
+## [7.3.2](https://github.com/softwaregroup-bg/ut-port-listen/compare/v7.3.1...v7.3.2) (2022-01-11)
+
+
+### Bug Fixes
+
+* change default port ([106d07c](https://github.com/softwaregroup-bg/ut-port-listen/commit/106d07cc4a7c9e2d19aaa4fd34fcf840c55cdb11))
+
+
+
 ## [7.3.1](https://github.com/softwaregroup-bg/ut-port-listen/compare/v7.3.0...v7.3.1) (2022-01-11)
 
 
