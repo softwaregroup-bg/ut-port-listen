@@ -11,13 +11,13 @@
     "devDependencies": {
         "tap": "^15.0.10",
         "ut-port-script": "^7.2.0",
-        "ut-port-wss": "^7.2.2",
-        "ut-tools": "^6.39.0"
+        "ut-port-wss": "^8.0.0",
+        "ut-tools": "^6.40.0"
     },
     "peerDependencies": {
         "ut-port-script": "^7.2.0",
-        "ut-port-wss": "^7.2.2",
-        "ut-run": "^10.64.6"
+        "ut-port-wss": "^8.0.0",
+        "ut-run": "^10.64.9"
     },
     "scripts": {
         "lint": "ut-lint .",
