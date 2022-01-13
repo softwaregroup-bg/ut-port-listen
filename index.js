@@ -65,8 +65,9 @@ module.exports = function listen() {
                     ws.on('message', data => {
                         if (initial) {
                             initial = false;
-                            const {callId, sampleRate, fulfilParams, context, contextParams} = JSON.parse(data);
+                            const {callId, sampleRate, fulfilParams, context, contextParams, from, to} = JSON.parse(data);
                             cId = callId;
+                            this.logInfo({startCall: callId, from, to});
                             const session = this.sessionsClient.projectAgentSessionPath(this.config.projectId, callId);
                             return this.createDetectStream(callId, {
                                 socket: ws,
@@ -88,6 +89,7 @@ module.exports = function listen() {
                         this.logInfo(data);
                     });
                     ws.on('close', () => {
+                        this.logInfo({endCall: cId});
                         const connection = this.connections.get(cId);
                         connection?.dialogflow?.end();
                         connection?.dialogflow?.destroy();
