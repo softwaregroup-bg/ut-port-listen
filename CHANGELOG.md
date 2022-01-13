@@ -1,3 +1,7 @@
+## [7.4.3](https://github.com/softwaregroup-bg/ut-port-listen/compare/v7.4.2...v7.4.3) (2022-01-13)
+
+
+
 ## [7.4.2](https://github.com/softwaregroup-bg/ut-port-listen/compare/v7.4.1...v7.4.2) (2022-01-11)
 
 
