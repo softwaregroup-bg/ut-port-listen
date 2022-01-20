@@ -1,3 +1,12 @@
+## [7.4.4](https://github.com/softwaregroup-bg/ut-port-listen/compare/v7.4.3...v7.4.4) (2022-01-20)
+
+
+### Bug Fixes
+
+* remove transcript logging ([e3a1ed2](https://github.com/softwaregroup-bg/ut-port-listen/commit/e3a1ed21c7180da5f6c58fc0a2063ac0273d9475))
+
+
+
 ## [7.4.3](https://github.com/softwaregroup-bg/ut-port-listen/compare/v7.4.2...v7.4.3) (2022-01-13)
 
 
