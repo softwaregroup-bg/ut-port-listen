@@ -127,7 +127,6 @@ module.exports = function listen() {
                 })
                 .on('data', ({recognitionResult, queryResult}) => {
                     if (recognitionResult) {
-                        this.logInfo({Transcript: recognitionResult.transcript});
                         if (recognitionResult.isFinal) {
                             this.connections.set(callId, {socket, session, sampleRate});
                             return dialogflow.end();
@@ -135,7 +134,6 @@ module.exports = function listen() {
                     } else {
                         dialogflow.destroy();
                         const {fulfillmentText: text} = queryResult;
-                        this.logInfo({Fulfillment: text});
                         if (socket.readyState === WebSocket.OPEN) {
                             this.createDetectStream(callId, {socket, sampleRate, session, fulfilParams});
                             return this.synthesizeAndPlay({socket, text, sampleRate});
