@@ -1,3 +1,12 @@
+## [7.4.5](https://github.com/softwaregroup-bg/ut-port-listen/compare/v7.4.4...v7.4.5) (2022-02-03)
+
+
+### Bug Fixes
+
+* typo #UTCORE-121 ([8e826a8](https://github.com/softwaregroup-bg/ut-port-listen/commit/8e826a8d188064e7198bd06f2ed8b4291735229a)), closes [#UTCORE-121](https://github.com/softwaregroup-bg/ut-port-listen/issues/UTCORE-121)
+
+
+
 ## [7.4.4](https://github.com/softwaregroup-bg/ut-port-listen/compare/v7.4.3...v7.4.4) (2022-01-20)
 
 
