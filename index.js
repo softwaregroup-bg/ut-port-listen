@@ -65,7 +65,7 @@ module.exports = function listen() {
                     ws.on('message', data => {
                         if (initial) {
                             initial = false;
-                            const {callId, sampleRate, fulfilParams, context, contextParams, from, to} = JSON.parse(data);
+                            const {callId, sampleRate, fulfillParams, context, contextParams, from, to} = JSON.parse(data);
                             cId = callId;
                             this.logInfo({startCall: callId, from, to});
                             const session = this.sessionsClient.projectAgentSessionPath(this.config.projectId, callId);
@@ -73,7 +73,7 @@ module.exports = function listen() {
                                 socket: ws,
                                 sampleRate,
                                 session,
-                                fulfilParams: struct.encode(fulfilParams),
+                                fulfillParams: struct.encode(fulfillParams),
                                 context,
                                 contextParams: struct.encode(contextParams)
                             });
@@ -115,7 +115,7 @@ module.exports = function listen() {
             }));
         }
 
-        async createDetectStream(callId, {socket, sampleRate, session, fulfilParams, context, contextParams}) {
+        async createDetectStream(callId, {socket, sampleRate, session, fulfillParams, context, contextParams}) {
             const dialogflow = this.sessionsClient.streamingDetectIntent();
             dialogflow
                 .on('error', error => {
@@ -135,7 +135,7 @@ module.exports = function listen() {
                         dialogflow.destroy();
                         const {fulfillmentText: text} = queryResult;
                         if (socket.readyState === WebSocket.OPEN) {
-                            this.createDetectStream(callId, {socket, sampleRate, session, fulfilParams});
+                            this.createDetectStream(callId, {socket, sampleRate, session, fulfillParams});
                             return this.synthesizeAndPlay({socket, text, sampleRate});
                         }
                     }
@@ -158,7 +158,7 @@ module.exports = function listen() {
                         }
                     },
                     queryParams: {
-                        payload: fulfilParams
+                        payload: fulfillParams
                     }
                 });
             this.connections.set(callId, {socket, dialogflow, session, sampleRate});
